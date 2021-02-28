@@ -10,11 +10,31 @@
 
 // TODO Votre code ici.
 try {
-    ...
+    require './db/version-static.php';
+    $db = DB::getInstance();
+
+    $sql = $db->prepare("INSERT INTO bdd_cours.user (nom, prenom, rue, numero, code_postal, ville, pays, mail) VALUES (:nom, :prenom, :rue, :numero, :codePostal, :ville, :pays, :mail)");
+
+    $sql->execute([
+        ':nom' => 'TESTNOM',
+        ':premnom' => 'TESTPRENOM',
+        ':rue' => 'RUE BOULEVARD',
+        ':numero' => 20,
+        ':codePostal' => 34350,
+        ':ville' => 'Valras',
+        ':pays' => 'France',
+        ':mail' => 'contact@contact.contact'
+    ]);
+    $lastId = $db->lastInsertID();
+    $sql = $db->prepare("UPDATE bdd_cours.user SET nom = :nom WHERE id = $lastId");
+
+    $sql->execute([
+        ':nom' => 'TESTMODIFIER'
+    ]);
+
+} catch(PDOException $exception) {
+    echo $exception->getMessage();
 }
-catch...
-
-
 
 /**
  * Théorie
